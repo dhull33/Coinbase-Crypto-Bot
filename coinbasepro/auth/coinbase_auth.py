@@ -1,8 +1,35 @@
 """
 This code was provided by Coinbase at https://docs.pro.coinbase.com/?python#signing-a-message
+
+Exampl Usage:
+api_url = 'https://api.pro.coinbase.com/'
+auth = CoinbaseExchangeAuth(API_KEY, API_SECRET, API_PASS)
+
+# Get accounts
+r = requests.get(api_url + 'accounts', auth=auth)
+print r.json()
+# [{"id": "a1b2c3d4", "balance":...
+
+# Place an order
+order = {
+    'size': 1.0,
+    'price': 1.0,
+    'side': 'buy',
+    'product_id': 'BTC-USD',
+}
+r = requests.post(api_url + 'orders', json=order, auth=auth)
+print r.json()
+# {"id": "0428b97b-bec1-429e-a94c-59992926778d"}
+
 """
-import json, hmac, hashlib, time, requests, base64
+import json, hmac, hashlib, time, requests, base64, os
 from requests.auth import AuthBase
+from dotenv import load_dotenv
+load_dotenv()
+
+KEY = os.getenv('API_KEY')
+SECRET = os.getenv('API_SECRET')
+PASS = os.getenv('API_PASS')
 
 # Create custom authentication for Exchange
 class CoinbaseExchangeAuth(AuthBase):
@@ -13,10 +40,12 @@ class CoinbaseExchangeAuth(AuthBase):
 
     def __call__(self, request):
         timestamp = str(time.time())
-        message = timestamp + request.method + request.path_url + (request.body or '')
+        message = timestamp + request.method + request.path_url + (
+                request.body or '')
+        message = message.encode('utf-8')
         hmac_key = base64.b64decode(self.secret_key)
         signature = hmac.new(hmac_key, message, hashlib.sha256)
-        signature_b64 = signature.digest().encode('base64').rstrip('\n')
+        signature_b64 = base64.b64encode(signature.digest())
 
         request.headers.update({
             'CB-ACCESS-SIGN': signature_b64,
@@ -26,3 +55,10 @@ class CoinbaseExchangeAuth(AuthBase):
             'Content-Type': 'application/json'
         })
         return request
+
+api_url = 'https://api.pro.coinbase.com/'
+auth = CoinbaseExchangeAuth(KEY, SECRET, PASS)
+
+# Get accounts
+r = requests.get(api_url + 'accounts', auth=auth)
+print(r.json())
