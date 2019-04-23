@@ -1,7 +1,9 @@
 """
 This code was provided by Coinbase at https://docs.pro.coinbase.com/?python#signing-a-message
 
-Exampl Usage:
+It has to be included with every request
+
+Example Usage:
 api_url = 'https://api.pro.coinbase.com/'
 auth = CoinbaseExchangeAuth(API_KEY, API_SECRET, API_PASS)
 
@@ -32,7 +34,7 @@ SECRET = os.getenv('API_SECRET')
 PASS = os.getenv('API_PASS')
 
 # Create custom authentication for Exchange
-class CoinbaseExchangeAuth(AuthBase):
+class CoinbaseAuth(AuthBase):
     def __init__(self, api_key, secret_key, passphrase):
         self.api_key = api_key
         self.secret_key = secret_key
@@ -57,8 +59,8 @@ class CoinbaseExchangeAuth(AuthBase):
         return request
 
 api_url = 'https://api.pro.coinbase.com/'
-auth = CoinbaseExchangeAuth(KEY, SECRET, PASS)
+auth = CoinbaseAuth(KEY, SECRET, PASS)
 
 # Get accounts
-r = requests.get(api_url + 'accounts', auth=auth)
+r = requests.get(api_url + 'products')
 print(r.json())
