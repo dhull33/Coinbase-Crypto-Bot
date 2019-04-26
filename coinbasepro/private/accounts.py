@@ -12,8 +12,8 @@ class Accounts:
     def __init__(self):
         self.url = 'https://api.pro.coinbase.com'
 
-    def list_trading_accounts(self, auth):
-        accounts = requests.get(self.url + 'accounts', auth=auth)
+    def list_trading_accounts(self, auth=None):
+        accounts = requests.get(self.url + 'accounts', auth)
         return accounts.json()
 
 
