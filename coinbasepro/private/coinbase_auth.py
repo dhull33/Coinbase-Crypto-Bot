@@ -26,12 +26,6 @@ print r.json()
 """
 import json, hmac, hashlib, time, requests, base64, os
 from requests.auth import AuthBase
-from dotenv import load_dotenv
-load_dotenv()
-
-KEY = os.getenv('API_KEY')
-SECRET = os.getenv('API_SECRET')
-PASS = os.getenv('API_PASS')
 
 # Create custom authentication for Exchange
 class CoinbaseAuth(AuthBase):
@@ -57,10 +51,3 @@ class CoinbaseAuth(AuthBase):
             'Content-Type': 'application/json'
         })
         return request
-
-api_url = 'https://api.pro.coinbase.com/'
-auth = CoinbaseAuth(KEY, SECRET, PASS)
-
-# Get accounts
-r = requests.get(api_url + 'products')
-print(r.json())
