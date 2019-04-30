@@ -1,5 +1,5 @@
 import os, requests, json
-from coinbase_auth import CoinbaseAuth
+from .coinbase_auth import CoinbaseAuth
 from requests.auth import AuthBase
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,12 +22,7 @@ class Accounts:
         # URL for sandbox
         self.sandbox_url = 'https://api-public.sandbox.pro.coinbase.com/'
 
-    def list_trading_accounts(self, autho):
-        accounts = requests.get(self.sandbox_url + 'accounts', auth=autho)
-        return accounts.json()
+    def list_trading_accounts(self, auth):
+            accounts = requests.get(self.sandbox_url + 'accounts', auth=auth)
+            return accounts.json()
 
-
-
-autho = CoinbaseAuth(SAND_KEY, SAND_SECRET, SAND_PASS)
-account = Accounts()
-print(account.list_trading_accounts(autho))
