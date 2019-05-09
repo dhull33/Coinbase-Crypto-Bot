@@ -27,6 +27,7 @@ print r.json()
 import json, hmac, hashlib, time, requests, base64, os
 from requests.auth import AuthBase
 
+
 # Create custom authentication for Exchange
 class CoinbaseAuth(AuthBase):
     def __init__(self, api_key, secret_key, passphrase):

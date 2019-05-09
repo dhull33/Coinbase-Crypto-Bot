@@ -14,6 +14,7 @@ SAND_KEY = os.getenv('SAND_KEY')
 SAND_SECRET = os.getenv('SAND_SECRET')
 SAND_PASS = os.getenv('SAND_PASS')
 
+
 class Accounts:
     def __init__(self):
         # URL for actual api
@@ -23,6 +24,5 @@ class Accounts:
         self.sandbox_url = 'https://api-public.sandbox.pro.coinbase.com/'
 
     def list_trading_accounts(self, auth):
-            accounts = requests.get(self.sandbox_url + 'accounts', auth=auth)
-            return accounts.json()
-
+        accounts = requests.get(self.sandbox_url + 'accounts', auth=auth)
+        return accounts.json()
